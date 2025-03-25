@@ -13,7 +13,7 @@ df = pd.read_csv("dataset_vectorizado.csv")
 # Convertir la columna de imágenes de base64 a arrays de numpy
 def base64_to_image(base64_str):
     img_data = base64.b64decode(base64_str)
-    np_arr = np.frombuffer(img_data, np.uint8)
+    np_arr = np.frombuffer(img_data, np.uint8) 
     img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     return img
 
