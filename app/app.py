@@ -70,9 +70,10 @@ def predict():
         img_base64 = data['image']
         
         categoria = {
-            0: "cartón",
-            1: "papel",
-            2: "plastico"
+            0: "nulo",
+            1: "cartón",
+            2: "metal",
+            3: "papel"
         }
         
         prediccion = predecir_imagen(img_base64)
@@ -80,14 +81,13 @@ def predict():
             return jsonify({'error': 'Error procesando imagen'}), 400
             
         return jsonify({
-            'categoria': categoria.get(prediccion, 'desconocido'),
-            'codigo': int(prediccion)
+            'categoria': categoria.get(prediccion + 1, 'desconocido'),
+            'codigo': int(prediccion +1)
         })
         
     except Exception as e:
         print(f"Error en /predict: {str(e)}")
         return jsonify({'error': str(e)}), 500
-
 
 # Cargar el modelo y el vectorizador
 ruta_modelo = os.path.join(os.getcwd(), "app", "chatbot_model.pkl")
