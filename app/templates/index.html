@@ -109,7 +109,7 @@
             const reader = new FileReader();
             reader.onloadend = function() {
                 const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
-                fetch('http://127.0.0.1:5000/predict', {
+                fetch('http://sic25es-pythoners.onrender.com/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ image: base64String })
@@ -175,7 +175,7 @@
             resultDiv.innerHTML = '<div class="loader">Analizando...</div>';
             
             // Enviar al backend
-            fetch('http://127.0.0.1:5000/predict', {
+            fetch('http://sic25es-pythoners.onrender.com/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: base64String })
@@ -249,7 +249,7 @@
             const messagesDiv = document.getElementById("chatbot-messages");
             messagesDiv.innerHTML += `<div class="text-right text-blue-600 font-bold mb-1">${message}</div>`;
     
-            fetch("http://127.0.0.1:5000/chat", {
+            fetch("http://sic25es-pythoners.onrender.com/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message })
