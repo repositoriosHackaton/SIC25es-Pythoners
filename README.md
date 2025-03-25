@@ -20,7 +20,7 @@ Este proyecto consiste en el desarrollo de un modelo de clasificación de residu
 ![ProyectoGIF](img/ProyectoGIF.gif)
 
 ### Arquitectura
-- La arquitectura del proyecto se puede visualizar a través del siguiente diagrama de despliegue:
+- La arquitectura del proyecto se puede visualizar a través del siguiente diagrama:
     ![Arquitectura](img/Arquitectura.png)
 
 - El funcionamiento del proyecto se puede visualizar a través del siguiente diagrama de flujo:
