@@ -35,11 +35,10 @@ Este proyecto consiste en el desarrollo de un modelo de clasificación de residu
 * **Manejo de excepciones / control de errores:**
     - Se debe subir un archivo de imagen si se desea realizar la predicción, si se usa el botón "Subir y Predecir":
         ![ManejoExcepciones](img/ManejoExcepciones1.png)
-    - Otra excepcion...
+    - Manejo de excepción al cargar el modelo de clasificación de residuos reciclables:
         ![ManejoExcepciones](img/ManejoExcepciones2.png)
     - Otra excepcion...
         ![ManejoExcepciones](img/ManejoExcepciones3.png)
-
 
 * **Estadísticos (Valores, gráficos, …):**
     1. Metricas y graficos del modelo de clasificación de residuos reciclables:
@@ -67,11 +66,11 @@ Este proyecto consiste en el desarrollo de un modelo de clasificación de residu
 ### Funcionalidades
 
 - **Integración de un chatbot:**
-    - Tecnología / Herramientas usadas: 
+    - Tecnología / Herramientas usadas: Naive Bayes, CountVectorizer, pickle, Random.
 - **Uso de cámara para la detección de residuos reciclables:**
-    - Tecnología / Herramientas usadas:
+    - Tecnología / Herramientas usadas: OpenCV, Numpy, Base64, pickle, RandomForestClassifier.
 - **Integración del proyecto en una página web:**
-    - Enlace: (pendiente)
+    - Enlace: https://sic25es-pythoners.onrender.com/
     - Tecnología / Herramientas usadas: HTML, CSS, Tailwind, Flask, Render.
     - Arquitectura (img): La arquitectura del proyecto junto con la integración en una página web se puede visualizar a través del siguiente diagrama:
         ![ArquitecturaWeb](img/ArquitecturaWeb.png)
