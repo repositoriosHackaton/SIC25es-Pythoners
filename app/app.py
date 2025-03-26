@@ -155,7 +155,7 @@ def chat():
     ],
 
     "reciclaje": [
-        "Puedes encontrar zonas de reciclaje en centros como Recicla503 y otros puntos estratégicos. Consulta el Ministerio de Medio Ambiente para más información.",
+        "Puedes encontrar zonas de reciclaje en centros como Recicla503 y otros puntos estratégicos. Consulta el <a href='https://www.ambiente.gob.sv/se-parte-de-la-cadena-del-reciclaje/' target='_blank' style='font-weight: bold; text-decoration: underline;'>Ministerio de Medio Ambiente</a> para más información.",
     ],
     "quereciclar":[
         "Puedes reciclar papel, cartón, plástico, vidrio, metales y más. Asegúrate de separar los materiales correctamente.","Materiales como electrónicos viejos, baterías, envases de vidrio, plástico y papel pueden ser reciclados. Consulta con tu centro local de reciclaje para más detalles.","Recicla residuos como botellas de plástico, latas de metal, papel usado, y recuerda separar los materiales orgánicos de los inorgánicos.", "Es importante reciclar cosas como cartón, vidrio y plástico. Para electrónicos y baterías, verifica los puntos de recolección especializados."
