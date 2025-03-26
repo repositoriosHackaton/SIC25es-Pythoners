@@ -62,7 +62,6 @@ data = [
 ("en que nos beneficia reciclar?", "importanciareciclaje"),
 # comoreciclar
 ("como", "comoreciclar"),
-("como", "comoreciclar"),
 ("como puedo empezar a reciclar?", "comoreciclar"),
 ("como iniciar con el reciclaje?", "comoreciclar"),
 ("cual es el primer paso para reciclar?", "comoreciclar"),
@@ -78,6 +77,15 @@ data = [
 ("cual es la idea principal de la economia circular?", "circular"),
 ("como funciona la economia circular?", "circular"),
 ("que diferencia hay entre la economia circular y el reciclaje?", "circular"),
+# reciclaje
+("donde estan las zonas de reciclaje en el salvador?", "reciclaje"),
+("donde puedo encontrar centros de reciclaje en el salvador?", "reciclaje"),
+("donde estan los puntos de reciclaje en el pais?", "reciclaje"),
+("en que lugares de El Salvador puedo reciclar?", "reciclaje"),
+("donde se ubican las estaciones de reciclaje en el salvador?", "reciclaje"),
+("como encuentro sitios para reciclar en el salvador?", "reciclaje"),
+("que lugares reciben material reciclable en el salvador?", "reciclaje"),
+
 ]
 
 # Separar los mensajes y las etiquetas
