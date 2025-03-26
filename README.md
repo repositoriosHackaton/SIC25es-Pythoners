@@ -50,6 +50,7 @@ Este proyecto consiste en el desarrollo de un modelo de clasificación de residu
 
 * **Estadísticos (Valores, gráficos, …):**
     1. Metricas y graficos del modelo de clasificación de residuos reciclables:
+        Nota: En los gráficos dice plástico por error, lo correcto era metal, pero ya no nos dio el tiempo para volver a generar los gráficos (tardan mucho tiempo).
         - Cálculo de la precisión del modelo (75%):
             ![CalculoPrecision](img/CalculoPrecision.png)
         - Accuracy, Precision, Recall, F1-Score, Support:
