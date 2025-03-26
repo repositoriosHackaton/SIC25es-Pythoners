@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificador de Residuos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 text-white">
+    <div class="w-full max-w-4xl p-4 space-y-6">
+        <div class="bg-white text-gray-900 p-8 rounded-2xl shadow-lg text-center animate-fade-in transition duration-500 ease-in-out transform hover:scale-105">
+            <h1 class="text-3xl font-bold">Clasificador Inteligente de Residuos</h1>
+        </div>
+        
+        <div class="bg-white text-gray-900 p-8 rounded-2xl shadow-lg text-center animate-fade-in transition duration-500 ease-in-out transform hover:scale-105">
+            <p class="text-lg text-gray-700"><strong>Objetivo: </strong>Desarrollar un modelo de clasificación de residuos basado en Machine Learning que identifique y categorice imágenes de desechos en cartón, papel y plástico, para optimizar su separación en el proceso de reciclaje.</p>
+        </div>
+        
+        <!--inicio de la seccion de subida de archivos y prediccion-->
+        <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg text-center animate-fade-in max-w-md mx-auto">
+            <input type="file" id="fileInput" accept="image/*" class="w-full border p-2 rounded-lg mb-4 transition duration-300 ease-in-out transform hover:scale-105" onchange="previewImage()">
+            <img id="preview" class="hidden mx-auto mb-4 rounded-lg max-h-40 shadow-lg transition-opacity duration-500" alt="Vista previa">
+            <button onclick="uploadImage()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105">
+                Subir y Predecir
+            </button>
+            <div id="result" class="mt-4 text-lg font-semibold transition-opacity duration-500"></div>
+        </div>
+        <!--fin de la seccion de subida de archivos y prediccion-->
+        
+        <!--Inicio del Reconocimiento por Cámara-->
+        <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg text-center">
+            <h2 class="text-xl font-bold mb-4">Reconocimiento por Cámara</h2>
+            <button id="startCamera" class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4">
+                Activar Cámara
+            </button>
+
+            <button id="stopCamera" class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4 hidden">
+                Detener Cámara
+            </button>
+
+            <video id="video" width="400" height="300" autoplay class="hidden mx-auto rounded-lg"></video>
+            <canvas id="canvas" width="400" height="300" class="hidden mx-auto rounded-lg"></canvas>
+            <button id="captureBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4 hidden">
+                Capturar y Predecir
+            </button>
+            <div id="cameraResult" class="mt-4 text-lg font-semibold"></div>
+        </div>
+        <!--Fin del Reconocimiento por Cámara-->
+
+        <div class="bg-white text-gray-900 p-4 rounded-2xl shadow-lg text-center animate-fade-in transition duration-500 ease-in-out transform hover:scale-105">
+            <footer class="text-lg font-bold">Samsung Innovation Campus - Pythoners</footer>
+        </div>
+    </div>
+    
+    <!--inicio de la seccion del chatbot-->
+    <button id="chatbot-btn" class="fixed bottom-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700">
+        Eco-Chat 💬
+    </button>
+
+    <div id="chatbot-popup" class="hidden fixed bottom-16 right-5 bg-white w-80 h-125 p-4 shadow-lg rounded-lg border">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="text-lg font-bold text-gray-700">Eco-Chat</h3>
+            <button onclick="toggleChatbot()" class="text-red-500 text-lg">✖</button>
+        </div>
+        <div id="chatbot-messages" class="h-64 overflow-y-auto border p-2 text-gray-700 bg-gray-100 rounded"></div>
+        
+        <!-- Contenedor para el botón de "?" y el input -->
+        <div class="flex items-center mt-2">
+            <div class="relative mr-2">
+                <button id="faq-btn" class="bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full">
+                    ?  
+                </button>
+                <div id="faq-menu" class="absolute bottom-full left-0 mb-2 w-48 bg-white border rounded-lg shadow-lg hidden">
+                    <ul class="text-gray-700">
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('como puedo empezar a reciclar?')">¿Cómo puedo empezar a reciclar?</li>
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('por que es importante reciclar?')">¿Por qué es importante reciclar?</li>
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('que materiales puedo reciclar?')">¿Qué materiales puedo reciclar?</li>
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('que es la economía circular?')">¿Qué es la economía circular?</li>
+                    </ul>
+                </div>
+            </div>
+            <input id="chatbot-input" type="text" placeholder="Escribe tu mensaje..." class="flex-grow border rounded p-2 text-black">
+        </div>
+        
+        <button onclick="sendMessage()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full">Enviar</button>
+    </div>
+    <!--fin de la seccion del chatbot-->
+
+    <script>
+        //previsualizacion de imagen
+        function previewImage() {
+            const fileInput = document.getElementById('fileInput');
+            const preview = document.getElementById('preview');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    preview.classList.add('opacity-100');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        //carga de imagen al sitio
+        function uploadImage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                document.getElementById('result').innerText = 'Por favor, selecciona una imagen';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+                fetch('https://sic25es-pythoners.onrender.com/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: base64String })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerText = `La imagen que proporcionó es: ${data.categoria}`;
+                })
+                .catch(error => {
+                    document.getElementById('result').innerText = 'Error en la predicción';
+                    console.error('Error:', error);
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Variables globales
+        let videoStream = null;
+        const video = document.getElementById('video');
+        const startCameraBtn = document.getElementById('startCamera');
+        const captureBtn = document.getElementById('captureBtn');
+        const stopCameraBtn = document.getElementById('stopCamera');
+
+        // Activar cámara
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: 640, 
+                        height: 480,
+                        facingMode: 'environment' // Usar cámara trasera en móviles
+                    } 
+                });
+                video.srcObject = videoStream;
+                video.classList.remove('hidden');
+                captureBtn.classList.remove('hidden');
+                startCameraBtn.disabled = true;
+                stopCameraBtn.classList.remove('hidden'); // Mostrar botón de detener
+                // Limpiar resultados anteriores
+                document.getElementById('cameraResult').innerText = '';
+            } catch (err) {
+                console.error("Error al acceder a la cámara:", err);
+                alert("No se pudo acceder a la cámara. Asegúrate de permitir los permisos.");
+            }
+        });
+
+        // Capturar y predecir
+        captureBtn.addEventListener('click', () => {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // ajusta tamaño del canvas al video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // convertir a base64
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            const base64String = imageData.split(',')[1];
+            
+            // mostrar loader
+            const resultDiv = document.getElementById('cameraResult');
+            resultDiv.innerHTML = '<div class="loader">Analizando...</div>';
+            
+            // enviar al backend
+            fetch('https://sic25es-pythoners.onrender.com/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: base64String })
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.innerHTML = `
+                    <div class="result-card" style="border-color: ${getCategoryColor(data.codigo)}">
+                        <span class="emoji">${getCategoryEmoji(data.codigo)}</span>
+                        <strong>${data.categoria}</strong>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<div class="error">Error en la predicción</div>';
+                console.error('Error:', error);
+            });
+        });
+
+        // detener cámara correctamente
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.classList.add('hidden');
+                captureBtn.classList.add('hidden');
+                stopCameraBtn.classList.add('hidden');
+                startCameraBtn.disabled = false;
+                
+                // limpiar canvas si existe
+                const canvas = document.getElementById('canvas');
+                if (canvas) {
+                    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+        }
+
+        // evento para el botón de detener
+        stopCameraBtn.addEventListener('click', stopCamera);
+
+        // eventos para cerrar la cámara
+        window.addEventListener('beforeunload', stopCamera);
+        window.addEventListener('pagehide', stopCamera);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopCamera();
+        });
+
+        //inicio de codigo de chatbot
+        function toggleChatbot() {
+            const popup = document.getElementById("chatbot-popup");
+            popup.classList.toggle("hidden");
+        }
+    
+        document.getElementById("chatbot-btn").addEventListener("click", toggleChatbot);
+    
+        function sendMessage() {
+            const input = document.getElementById("chatbot-input");
+            const message = input.value.trim();
+            if (!message) return;
+    
+            const messagesDiv = document.getElementById("chatbot-messages");
+            messagesDiv.innerHTML += `<div class="text-right text-blue-600 font-bold mb-1">${message}</div>`;
+    
+            fetch("https://sic25es-pythoners.onrender.com/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                messagesDiv.innerHTML += `<div class="text-left text-gray-700 bg-gray-200 p-2 rounded-md mb-1">${data.response}</div>`;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            })
+            .catch(error => console.error("Error:", error));
+    
+            input.value = "";
+        }
+
+        // función para mostrar/ocultar el menú
+        document.getElementById("faq-btn").addEventListener("click", function () {
+        document.getElementById("faq-menu").classList.toggle("hidden");
+        });
+
+        // función para insertar la pregunta en el input
+        function fillInput(text) {
+            document.getElementById("chatbot-input").value = text;
+            document.getElementById("faq-menu").classList.add("hidden"); // Ocultar el menú después de seleccionar
+        }
+
+        //fin de codigo de chatbot
+
+        // definicion de colores y emojis para las categorias de prediccion del servicio visual
+        function getCategoryColor(code) {
+            const colors = { 0: '#E69DFB', 1: '#8B4513', 2: '#FFFFFF', 3: '#BBA9BB' };
+            return colors[code] || '#000000';
+        }
+
+        function getCategoryEmoji(code) {
+            const emojis = { 0: '👽', 1: '📦', 2: '🥫', 3: '📄' };
+            return emojis[code] || '❓';
+        }
+</script>
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+        .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result-card {
+            border-left: 5px solid;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+        }
+        .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        #stopCamera {
+            transition: all 0.3s ease;
+        }
+        #stopCamera:hover {
+            transform: scale(1.05);
+            background-color: #e53e3e; /* Rojo más oscuro al hover */
+        }
+
+        .hidden { display: none; }
+        #chatbot-popup {
+              max-height: 75vh; /* Ajusta la altura máxima según sea necesario */
+              overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
+              bottom: 80px; /* Ajusta la posición para que no se desborde */
+        }           
+
+    </style>
+</body>
+</html>
