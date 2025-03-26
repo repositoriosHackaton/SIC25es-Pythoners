@@ -6,6 +6,7 @@ import numpy as np
 import base64
 import os
 import random
+import unicodedata
 
 app = Flask(__name__)
 CORS(app)
@@ -36,6 +37,12 @@ def predecir_imagen(img_base64):
     prediccion = clf.predict(img_flat)
     return prediccion[0]
 
+def quitar_tildes(texto):
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', texto) 
+        if unicodedata.category(c) != 'Mn'
+    )
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
@@ -63,6 +70,9 @@ with open(ruta_vectorizer, "rb") as vectorizer_file:
 def chat():
     data = request.json
     user_message = data.get('message', '').lower()
+
+    # Quitar tildes antes de vectorizar
+    user_message = quitar_tildes(user_message)
     
     # Vectorizar el mensaje del usuario
     user_message_vectorized = vectorizer.transform([user_message])
