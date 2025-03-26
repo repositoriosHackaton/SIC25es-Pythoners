@@ -9,23 +9,35 @@ import random
 
 # Configuración inicial de la aplicación
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')  # Lee la clave
+app.secret_key = os.getenv('SECRET_KEY')
 CORS(app)
 
-# Configuración de rutas importantes
+# Configuración de rutas
 app.config.update({
-    'MODEL_PATH': os.path.join(app.root_path, 'data', 'modelo_random_forest.pkl'),
+    'MODEL_IMAGE_PATH': os.path.join(app.root_path, 'data', 'modelo_random_forest.pkl'),
+    'MODEL_CHATBOT_PATH': os.path.join(app.root_path, 'data', 'chatbot_model.pkl'),
+    'VECTORIZER_PATH': os.path.join(app.root_path, 'data', 'vectorizer.pkl'),
     'IMG_SIZE': (512, 384)
 })
 
-# Cargar el modelo de ML al iniciar
+# Cargar modelos al iniciar
 try:
-    with open(app.config['MODEL_PATH'], "rb") as model_file:
-        clf = pickle.load(model_file)
-    print("✅ Modelo cargado correctamente desde:", app.config['MODEL_PATH'])
+    # Modelo de imágenes
+    with open(app.config['MODEL_IMAGE_PATH'], "rb") as f:
+        clf = pickle.load(f)
+    
+    # Modelo y vectorizador del chatbot
+    with open(app.config['MODEL_CHATBOT_PATH'], "rb") as f:
+        chatbot_model = pickle.load(f)
+    
+    with open(app.config['VECTORIZER_PATH'], "rb") as f:
+        vectorizer = pickle.load(f)
+    
+    print("Todos los modelos cargados correctamente")
 except Exception as e:
-    print(f"❌ Error cargando el modelo: {str(e)}")
-    clf = None
+    print(f"Error cargando modelos: {str(e)}")
+    clf, chatbot_model, vectorizer = None, None, None
+
 
 def base64_to_image(base64_str):
     """Convierte una cadena base64 a imagen OpenCV"""
@@ -71,9 +83,10 @@ def predict():
         
         categoria = {
             0: "nulo",
-            1: "cartón",
+            1: "carton",
             2: "metal",
-            3: "papel"
+            3: "papel",
+            
         }
         
         prediccion = predecir_imagen(img_base64)
@@ -82,25 +95,20 @@ def predict():
             
         return jsonify({
             'categoria': categoria.get(prediccion + 1, 'desconocido'),
-            'codigo': int(prediccion +1)
+            'codigo': int(prediccion + 1)
         })
         
     except Exception as e:
         print(f"Error en /predict: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-# Cargar el modelo y el vectorizador
-ruta_modelo = os.path.join(os.getcwd(), "app", "chatbot_model.pkl")
-ruta_vectorizer = os.path.join(os.getcwd(), "app", "vectorizer.pkl")
-
-with open(ruta_modelo, "rb") as model_file:
-    model = pickle.load(model_file)
-
-with open(ruta_vectorizer, "rb") as vectorizer_file:
-    vectorizer = pickle.load(vectorizer_file)
-
+# Función para chat
 @app.route('/chat', methods=['POST'])
 def chat():
+    #busca si esta los archivos pkl relacionados al chatbot
+    if not chatbot_model or not vectorizer:
+        return jsonify({'error': 'Modelo de chatbot no disponible'}), 500
+    
     data = request.json
     user_message = data.get('message', '').lower()
     
@@ -108,7 +116,7 @@ def chat():
     user_message_vectorized = vectorizer.transform([user_message])
     
     # Predecir la categoría
-    prediction = model.predict(user_message_vectorized)
+    prediction = chatbot_model.predict(user_message_vectorized)
     
     # Respuestas basadas en la predicción
     responses = {
@@ -157,8 +165,6 @@ def chat():
     response = random.choice(responses.get(prediction[0], ["Lo siento, no entiendo tu mensaje."]))
 
     return jsonify({'response': response})
-
-
 
 if __name__ == '__main__':
     # Configuración para desarrollo

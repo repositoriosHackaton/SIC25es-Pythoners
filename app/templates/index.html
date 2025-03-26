@@ -16,6 +16,7 @@
             <p class="text-lg text-gray-700"><strong>Objetivo: </strong>Desarrollar un modelo de clasificación de residuos basado en Machine Learning que identifique y categorice imágenes de desechos en cartón, papel y plástico, para optimizar su separación en el proceso de reciclaje.</p>
         </div>
         
+        <!--inicio de la seccion de subida de archivos y prediccion-->
         <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg text-center animate-fade-in max-w-md mx-auto">
             <input type="file" id="fileInput" accept="image/*" class="w-full border p-2 rounded-lg mb-4 transition duration-300 ease-in-out transform hover:scale-105" onchange="previewImage()">
             <img id="preview" class="hidden mx-auto mb-4 rounded-lg max-h-40 shadow-lg transition-opacity duration-500" alt="Vista previa">
@@ -24,8 +25,9 @@
             </button>
             <div id="result" class="mt-4 text-lg font-semibold transition-opacity duration-500"></div>
         </div>
-
-        <!-- Dentro del div principal (antes del footer) -->
+        <!--fin de la seccion de subida de archivos y prediccion-->
+        
+        <!--Inicio del Reconocimiento por Cámara-->
         <div class="bg-white text-gray-900 p-6 rounded-2xl shadow-lg text-center">
             <h2 class="text-xl font-bold mb-4">Reconocimiento por Cámara</h2>
             <button id="startCamera" class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4">
@@ -43,46 +45,49 @@
             </button>
             <div id="cameraResult" class="mt-4 text-lg font-semibold"></div>
         </div>
-        
+        <!--Fin del Reconocimiento por Cámara-->
+
         <div class="bg-white text-gray-900 p-4 rounded-2xl shadow-lg text-center animate-fade-in transition duration-500 ease-in-out transform hover:scale-105">
             <footer class="text-lg font-bold">Samsung Innovation Campus - Pythoners</footer>
         </div>
     </div>
-
-<!--chatbot-->
-<button id="chatbot-btn" class="fixed bottom-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700">
-    Eco-Chat 💬
-</button>
-
-<div id="chatbot-popup" class="hidden fixed bottom-16 right-5 bg-white w-80 h-125 p-4 shadow-lg rounded-lg border">
-    <div class="flex justify-between items-center mb-2">
-        <h3 class="text-lg font-bold text-gray-700">Eco-Chat</h3>
-        <button onclick="toggleChatbot()" class="text-red-500 text-lg">✖</button>
-    </div>
-    <div id="chatbot-messages" class="h-64 overflow-y-auto border p-2 text-gray-700 bg-gray-100 rounded"></div>
     
-    <!-- Contenedor para el botón de "?" y el input -->
-    <div class="flex items-center mt-2">
-        <div class="relative mr-2">
-            <button id="faq-btn" class="bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full">
-                  ?  
-            </button>
-            <div id="faq-menu" class="absolute bottom-full left-0 mb-2 w-48 bg-white border rounded-lg shadow-lg hidden">
-                <ul class="text-gray-700">
-                    <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Cómo puedo empezar a reciclar?')">¿Cómo puedo empezar a reciclar?</li>
-                    <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Por qué es importante reciclar?')">¿Por qué es importante reciclar?</li>
-                    <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Qué materiales puedo reciclar?')">¿Qué materiales puedo reciclar?</li>
-                    <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Qué es la economía circular?')">¿Qué es la economía circular?</li>
-                </ul>
-            </div>
+    <!--inicio de la seccion del chatbot-->
+    <button id="chatbot-btn" class="fixed bottom-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700">
+        Eco-Chat 💬
+    </button>
+
+    <div id="chatbot-popup" class="hidden fixed bottom-16 right-5 bg-white w-80 h-125 p-4 shadow-lg rounded-lg border">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="text-lg font-bold text-gray-700">Eco-Chat</h3>
+            <button onclick="toggleChatbot()" class="text-red-500 text-lg">✖</button>
         </div>
-        <input id="chatbot-input" type="text" placeholder="Escribe tu mensaje..." class="flex-grow border rounded p-2 text-black">
-    </div>
-    
-    <button onclick="sendMessage()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full">Enviar</button>
-</div>
+        <div id="chatbot-messages" class="h-64 overflow-y-auto border p-2 text-gray-700 bg-gray-100 rounded"></div>
         
+        <!-- Contenedor para el botón de "?" y el input -->
+        <div class="flex items-center mt-2">
+            <div class="relative mr-2">
+                <button id="faq-btn" class="bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full">
+                    ?  
+                </button>
+                <div id="faq-menu" class="absolute bottom-full left-0 mb-2 w-48 bg-white border rounded-lg shadow-lg hidden">
+                    <ul class="text-gray-700">
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Cómo puedo empezar a reciclar?')">¿Cómo puedo empezar a reciclar?</li>
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Por qué es importante reciclar?')">¿Por qué es importante reciclar?</li>
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Qué materiales puedo reciclar?')">¿Qué materiales puedo reciclar?</li>
+                        <li class="p-2 hover:bg-gray-200 cursor-pointer" onclick="fillInput('¿Qué es la economía circular?')">¿Qué es la economía circular?</li>
+                    </ul>
+                </div>
+            </div>
+            <input id="chatbot-input" type="text" placeholder="Escribe tu mensaje..." class="flex-grow border rounded p-2 text-black">
+        </div>
+        
+        <button onclick="sendMessage()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full">Enviar</button>
+    </div>
+    <!--fin de la seccion del chatbot-->
+
     <script>
+        //previsualizacion de imagen
         function previewImage() {
             const fileInput = document.getElementById('fileInput');
             const preview = document.getElementById('preview');
@@ -98,6 +103,7 @@
             }
         }
         
+        //carga de imagen al sitio
         function uploadImage() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
@@ -109,7 +115,7 @@
             const reader = new FileReader();
             reader.onloadend = function() {
                 const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
-                fetch('http://sic25es-pythoners.onrender.com/predict', {
+                fetch('https://sic25es-pythoners.onrender.com/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ image: base64String })
@@ -133,7 +139,7 @@
         const captureBtn = document.getElementById('captureBtn');
         const stopCameraBtn = document.getElementById('stopCamera');
 
-        // 1. Activar cámara
+        // Activar cámara
         startCameraBtn.addEventListener('click', async () => {
             try {
                 videoStream = await navigator.mediaDevices.getUserMedia({ 
@@ -156,26 +162,26 @@
             }
         });
 
-        // 2. Capturar y predecir
+        // Capturar y predecir
         captureBtn.addEventListener('click', () => {
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Ajustar tamaño del canvas al video
+            // ajusta tamaño del canvas al video
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Convertir a base64 (calidad 80% para optimizar)
+            // convertir a base64
             const imageData = canvas.toDataURL('image/jpeg', 0.8);
             const base64String = imageData.split(',')[1];
             
-            // Mostrar loader
+            // mostrar loader
             const resultDiv = document.getElementById('cameraResult');
             resultDiv.innerHTML = '<div class="loader">Analizando...</div>';
             
-            // Enviar al backend
-            fetch('http://sic25es-pythoners.onrender.com/predict', {
+            // enviar al backend
+            fetch('https://sic25es-pythoners.onrender.com/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: base64String })
@@ -195,7 +201,7 @@
             });
         });
 
-        // 3. Detener cámara correctamente
+        // detener cámara correctamente
         function stopCamera() {
             if (videoStream) {
                 videoStream.getTracks().forEach(track => track.stop());
@@ -205,7 +211,7 @@
                 stopCameraBtn.classList.add('hidden');
                 startCameraBtn.disabled = false;
                 
-                // Limpiar canvas si existe
+                // limpiar canvas si existe
                 const canvas = document.getElementById('canvas');
                 if (canvas) {
                     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
@@ -213,27 +219,17 @@
             }
         }
 
-        // 4. Evento para el botón de detener
+        // evento para el botón de detener
         stopCameraBtn.addEventListener('click', stopCamera);
 
-        // Eventos para cerrar la cámara
+        // eventos para cerrar la cámara
         window.addEventListener('beforeunload', stopCamera);
         window.addEventListener('pagehide', stopCamera);
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) stopCamera();
         });
 
-        // Helpers para UI
-        function getCategoryColor(code) {
-            const colors = { 0: '#E69DFB', 1: '#8B4513', 2: '#BBA9BB', 3: '#FFFFFF'};
-            return colors[code] || '#000000';
-        }
-
-        function getCategoryEmoji(code) {
-            const emojis = { 0: '👽', 1: '📦', 2: '🥫', 3: '📄' };
-            return emojis[code] || '❓';
-        }
-        
+        //inicio de codigo de chatbot
         function toggleChatbot() {
             const popup = document.getElementById("chatbot-popup");
             popup.classList.toggle("hidden");
@@ -249,7 +245,7 @@
             const messagesDiv = document.getElementById("chatbot-messages");
             messagesDiv.innerHTML += `<div class="text-right text-blue-600 font-bold mb-1">${message}</div>`;
     
-            fetch("http://sic25es-pythoners.onrender.com/chat", {
+            fetch("https://sic25es-pythoners.onrender.com/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message })
@@ -264,18 +260,30 @@
             input.value = "";
         }
 
-        // Función para mostrar/ocultar el menú
-    document.getElementById("faq-btn").addEventListener("click", function () {
-    document.getElementById("faq-menu").classList.toggle("hidden");
-});
+        // función para mostrar/ocultar el menú
+        document.getElementById("faq-btn").addEventListener("click", function () {
+        document.getElementById("faq-menu").classList.toggle("hidden");
+        });
 
-// Función para insertar la pregunta en el input
-    function fillInput(text) {
-        document.getElementById("chatbot-input").value = text;
-        document.getElementById("faq-menu").classList.add("hidden"); // Ocultar el menú después de seleccionar
-}
+        // función para insertar la pregunta en el input
+        function fillInput(text) {
+            document.getElementById("chatbot-input").value = text;
+            document.getElementById("faq-menu").classList.add("hidden"); // Ocultar el menú después de seleccionar
+        }
 
-    </script>
+        //fin de codigo de chatbot
+
+        // definicion de colores y emojis para las categorias de prediccion del servicio visual
+        function getCategoryColor(code) {
+            const colors = { 0: '#E69DFB', 1: '#8B4513', 2: '#FFFFFF', 3: '#BBA9BB' };
+            return colors[code] || '#000000';
+        }
+
+        function getCategoryEmoji(code) {
+            const emojis = { 0: '👽', 1: '📦', 2: '🥫', 3: '📄' };
+            return emojis[code] || '❓';
+        }
+</script>
     <style>
         @keyframes fade-in {
             from { opacity: 0; transform: translateY(-10px); }
@@ -320,7 +328,8 @@
               max-height: 75vh; /* Ajusta la altura máxima según sea necesario */
               overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
               bottom: 80px; /* Ajusta la posición para que no se desborde */
-}           
-    </style>  
+        }           
+
+    </style>
 </body>
 </html>
