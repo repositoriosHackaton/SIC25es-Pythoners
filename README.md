@@ -41,8 +41,10 @@ Este proyecto consiste en el desarrollo de un modelo de clasificación de residu
 * **Manejo de excepciones / control de errores:**
     - Se debe subir un archivo de imagen si se desea realizar la predicción, si se usa el botón "Subir y Predecir":
         ![ManejoExcepciones](img/ManejoExcepciones1.png)
-    - Manejo de excepción en caso de que no se cargue el modelo o la imagen:
+    - Manejo de excepción en caso de que no se cargue la imagen:
         ![ManejoExcepciones](img/ManejoExcepciones2.jpeg)
+    - Manejo de excepción en caso de que no se carguen los modelos:
+        ![ManejoExcepciones](img/ManejoExcepciones4.jpeg)
     - Manejo de excepción en caso de que no se pueda hacer la predicción:
         ![ManejoExcepciones](img/ManejoExcepciones3.jpeg)
 
